@@ -1,3 +1,10 @@
 import pandas as pd
+from validador import validarFormato
 
-df = pd.read_csv("/home/luisromero13/Documentos/acciones.xlsx")
+def cargarAcciones(path):
+    es_valido, mensaje = validarFormato(path)
+    if es_valido:
+        df = pd.read_excel(path, sheet_name='Hoja1')
+    else:
+        print("Error en la validación:", mensaje)
+    return df, mensaje  

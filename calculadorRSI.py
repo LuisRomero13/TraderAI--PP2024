@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+
 # Función para calcular el RSI
 def calcular_RSI(data, period=14):
     delta = data.diff(1)  # Diferencia de precios día a día
