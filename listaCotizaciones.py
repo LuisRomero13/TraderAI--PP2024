@@ -1,26 +1,26 @@
 import yfinance as yf
-
-# validador Yfinance
-def verificar_ticker(ticker):
-    try:
-        # Intenta obtener información del ticker
-        datos = yf.Ticker(ticker).info
-        # Si no hay excepción, el ticker existe
-        return True
-    except ValueError:
-        # Si ocurre un ValueError, significa que el ticker no existe
-        print(f"La acción no existe: {e}")
-        return False
-    except Exception as e:
-        # Captura cualquier otro tipo de excepción (ej. conexión a internet)
-        print(f"Ocurrió un error: {e}")
-        return False
+import pandas as pd
+from validador import verificar_ticker
+from datetime import datetime, timedelta
 
 def descargarCotizaciones(simbolo):
     # Crea una instancia del objeto Ticker
     accion = yf.Ticker(simbolo)
+    
     #valida el ticker a trabajar
-    verificar_ticker(accion)
-    # Obtén datos históricos de precios
-    datos_historicos = accion.history(period="1mo") # "1d"=1 dia,"1mo"=1 mes, "1y"=1 año
-    print("Datos históricos de precios:", datos_historicos)
+    es_valido, mensaje = verificar_ticker(accion)
+    
+    if es_valido:
+        # Calcula la fecha actual y la fecha de 2 semanas atrás   
+        fecha_fin = datetime.now().strftime("%Y-%m-%d")
+        fecha_inicio = (datetime.now() - timedelta(days=15)).strftime("%Y-%m-%d")
+        
+        # Obtiene datos históricos de precios
+        datos_historicos = accion.history(start=fecha_inicio, end=fecha_fin)
+        
+        return datos_historicos, mensaje
+    else:
+        # En caso de no verificar la acción se devuelve un DataFrame vacio con su mensaje de error
+        df = pd.DataFrame()
+        
+        return df, mensaje
