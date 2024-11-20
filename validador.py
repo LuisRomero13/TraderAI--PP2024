@@ -33,7 +33,7 @@ def verificar_ticker(ticker):
         if 'shortName' in datos and datos['shortName'] is not None:
             return True, "La acción es válida"
         else:
-            return False, f"La acción no existe. Ingrese una accion válida."
+            return False, f"La acción no existe. Ingrese una acción válida."
     except ValueError as e:
         # Si ocurre un ValueError, significa que el ticker no existe
         return False, f"La acción no existe: {e}"

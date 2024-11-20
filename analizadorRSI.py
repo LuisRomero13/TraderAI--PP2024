@@ -20,6 +20,8 @@ def señalesRSI(df):
     # Ya lo inicializamos con texto de "no resuelto"
     # En caso de que si se resuelva solo se reemplaza el valor
     df['señal'] = "No se ha podido resolver"
+    # Se crea una lista de mensajes de error de cotizaciones
+    msj_cotiz = list()
     # Se recorre el Dataframe por filas
     for index, row in df.iterrows():
         # Se guarda el simbolo bursatil de cada accion
@@ -31,4 +33,7 @@ def señalesRSI(df):
             valorRSI = calcular_RSI(cotizaciones)
             señal = determinarSeñal(valorRSI)
             df.at[index, 'señal'] = señal
-    return df
+        else:
+            # Se van agregando las acciones por error
+            msj_cotiz.append(f"para la accion '{simbolo}': {msj}")
+    return df, msj_cotiz
